@@ -1,8 +1,11 @@
-
 """
 Author : Baibhab Adhikari
 Github : https://github.com/Baibhab-Adhikari
 
+A script to analyze disk space usage in a given directory.
+
+This script traverses a given directory, calculates the size of each file and directory,
+and converts these sizes to a user-specified unit (KB, MB, GB, or TB).
 """
 # imports
 import os
@@ -24,16 +27,16 @@ def converter(size_bytes, choice):
 
     """
     if choice == 'a':
-        return f"{size_bytes / BYTES_PER_UNIT} KB"
+        return f"{size_bytes / BYTES_PER_UNIT:.3f} KB"
     if choice == 'b':
-        return f"{size_bytes / (BYTES_PER_UNIT ** 2)} MB"
+        return f"{size_bytes / (BYTES_PER_UNIT ** 2):.3f} MB"
     if choice == 'c':
-        return f"{size_bytes / (BYTES_PER_UNIT ** 3)} GB"
+        return f"{size_bytes / (BYTES_PER_UNIT ** 3):.3f} GB"
     if choice == 'd':
-        return f"{size_bytes / (BYTES_PER_UNIT ** 4)} TB"
+        return f"{size_bytes / (BYTES_PER_UNIT ** 4):.3f} TB"
 
 # set directory PATH for analysis and initial testing of the program
-PATH = "/Users/baibhabb/Documents/Notes_Diagrams"
+PATH = "/Users/baibhabb/Documents/Adinova Face Emotion Recognition"
 
 
 # Dictionaries to store sizes
@@ -42,29 +45,29 @@ size_file = {}
 
 # Traverse the directory tree
 for dirpath, dirnames, filenames in os.walk(PATH):
-    TOTAL_DIR_SIZE = 0
+    total_dir_size = 0
     # Calculate size_bytes of each file
     for filename in filenames:
         file_path = os.path.join(dirpath, filename)
         file_size = os.path.getsize(file_path)
         size_file[file_path] = file_size
-        TOTAL_DIR_SIZE += file_size
+        total_dir_size += file_size
     # Store the total size_bytes of the directory
-    size_dir[dirpath] = TOTAL_DIR_SIZE
+    size_dir[dirpath] = total_dir_size
 
 # unit conversion:
-CHOOSE = "wrong"
+choose = "wrong"
 
-while CHOOSE.strip().lower() not in "abcd":
-    CHOOSE = input("Please CHOOSE the conversion unit : \n'a' for bytes to KB\n'b' for bytes to MB\n'c' for bytes to GB\n'd' for bytes to TB\n")
+while choose.strip().lower() not in "abcd":
+    choose = input("Please choose the conversion unit : \n'a' for bytes to KB\n'b' for bytes to MB\n'c' for bytes to GB\n'd' for bytes to TB\n")
 print("Converted file sizes in user chosen unit:")
 print("---------------------------------------------------------------------------------------------------------")
 print("Directories: ")
 print("---------------------------------------------------------------------------------------------------------")
 for dirpath, size in size_dir.items():
-    print(f"{dirpath}: {converter(size, CHOOSE)}")
+    print(f"{dirpath}: {converter(size, choose)}")
 print("---------------------------------------------------------------------------------------------------------")
 print("Files: ")
 print("---------------------------------------------------------------------------------------------------------")
 for filepath, size in size_file.items():
-    print(f"{filepath}: {converter(size, CHOOSE)}")
+    print(f"{filepath}: {converter(size, choose)}")
