@@ -34,9 +34,11 @@ def converter(size_bytes, choice):
         return f"{size_bytes / (BYTES_PER_UNIT ** 3):.3f} GB"
     if choice == 'd':
         return f"{size_bytes / (BYTES_PER_UNIT ** 4):.3f} TB"
+    else:
+        return f"{size_bytes} Bytes"
 
 # set directory PATH for analysis and initial testing of the program
-PATH = "/Users/baibhabb/Documents/Adinova Face Emotion Recognition"
+PATH = "/Users/baibhabb/Documents/REAPER Media"
 
 
 # Dictionaries to store sizes
@@ -49,7 +51,12 @@ for dirpath, dirnames, filenames in os.walk(PATH):
     # Calculate size_bytes of each file
     for filename in filenames:
         file_path = os.path.join(dirpath, filename)
-        file_size = os.path.getsize(file_path)
+        # error handling
+        try:
+            file_size = os.path.getsize(file_path)
+        except OSError:
+            print(f"Could not access file: {file_path}")  
+            file_size = 0
         size_file[file_path] = file_size
         total_dir_size += file_size
     # Store the total size_bytes of the directory
