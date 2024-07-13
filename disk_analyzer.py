@@ -29,6 +29,7 @@ Constants
 # imports
 import os
 import shutil
+import zipfile
 # global const
 BYTES_PER_UNIT = 1024  
 
@@ -63,7 +64,7 @@ program_standby = True  # bool flag
 while program_standby:
     
     print("Welcome to Disk Utility! What do you want to perform?")
-    print("A. Zip Directories\nB. Unzip Directories\nC. Analyze Disk Space\nD. Exit")
+    print("A. Zip Directories / Files\nB. Unzip Files\nC. Analyze Disk Space\nD. Exit")
 
     menu_choice = input("Please enter A,B,C or D: ")
     while menu_choice.strip().lower() not in "abcd":
@@ -71,38 +72,41 @@ while program_standby:
     
     # check input scenarios
     if menu_choice.lower() == 'a': 
-        # prompt user for the directory path
-        PATH = input("Please enter the path of your desired directory to zip: ")
-        # check for existence
-        if os.path.exists(PATH):
-            # if path exist then zip
-            try:
-                output_name = input("Enter the name for the output zip file (without extension): ")  # Dynamic output name
-                output_directory = input("Enter the directory where you want to save the zip file: ")  # Ask for output directory
-                output_path = os.path.join(output_directory, output_name)
-                shutil.make_archive(output_path, "zip", PATH)
-                print(f"Your directory is zipped as {output_path}.zip")
-            except Exception as e:
-                print(f"An error occurred: {e}")
+        PATH = input("Please enter the path of your desired directory or file to zip: ")
+        output_name = input("Enter the name for the output zip file (without extension): ")
+        output_directory = input("Enter the directory where you want to save the zip file: ")
+        output_path = os.path.join(output_directory, output_name + ".zip")
+
+        if os.path.isdir(PATH):
+            # If PATH is a directory, use shutil.make_archive
+            shutil.make_archive(output_path, 'zip', PATH)
+        elif os.path.isfile(PATH):
+            # If PATH is a file, use zipfile.ZipFile
+            with zipfile.ZipFile(output_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
+                zipf.write(PATH, os.path.basename(PATH))
+        else:
+            print("The path provided does not exist or is not valid.")
+
+        print(f"Your file / directory is zipped as {output_path}")
             
     elif menu_choice.lower() == 'b':
-        # Prompt user for the path of the zip file
-        zip_file_path = input("Please enter the path of your desired zip file to unzip: ")
-        # Check for existence
-        if os.path.exists(zip_file_path):
-            # If path exists then unzip
+          # Prompt user for the zip file path
+        zip_path = input("Please enter the path of the zip file to unpack: ")
+        # Check if the zip file exists
+        if os.path.isfile(zip_path) and zip_path.endswith('.zip'):
+            # Ask for the destination directory
+            destination = input("Enter the destination directory (leave blank to extract in the current directory): ")
+            if not destination:
+                # If no destination is provided, extract in the current directory
+                destination = os.getcwd()
             try:
-                output_directory = input("Enter the directory where you want to unzip the files: ")  # Ask for output directory
-                shutil.unpack_archive(zip_file_path, output_directory, "zip")
-                print(f"Your directory is unzipped in {output_directory}")
-            except shutil.ReadError:
-                print("The archive is corrupted or the format is not supported.")
-            except FileNotFoundError:
-                print("The specified file or directory was not found.")
+                with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+                    zip_ref.extractall(destination)
+                print(f"Files have been extracted to {destination}")
             except Exception as e:
                 print(f"An error occurred: {e}")
         else:
-            print("The specified zip file does not exist.")
+            print("The specified path does not point to a zip file.")
 
     elif menu_choice.lower() == "c":
         # prompt user for the directory path
@@ -148,6 +152,6 @@ while program_standby:
             for filepath, size in size_file.items():
                 print(f"{filepath}: {converter(size, choose)}")
     elif menu_choice.lower() == "d":
-        print("Exiting the program......")
+        print("Thankyou for using the Disk Utility Tool!\nExiting the program......")
         program_standby = False
         break
