@@ -58,6 +58,7 @@ def converter(size_bytes, choice):
     else:
         return f"{size_bytes} Bytes"
 
+
 # main menu design
 program_standby = True  # bool flag
 # printing menu options
@@ -90,7 +91,7 @@ while program_standby:
         print(f"Your file / directory is zipped as {output_path}")
             
     elif menu_choice.lower() == 'b':
-          # Prompt user for the zip file path
+        # Prompt user for the zip file path
         zip_path = input("Please enter the path of the zip file to unpack: ")
         # Check if the zip file exists
         if os.path.isfile(zip_path) and zip_path.endswith('.zip'):
@@ -155,3 +156,4 @@ while program_standby:
         print("Thankyou for using the Disk Utility Tool!\nExiting the program......")
         program_standby = False
         break
+    
