@@ -76,7 +76,7 @@ while program_standby:
         PATH = input("Please enter the path of your desired directory or file to zip: ")
         output_name = input("Enter the name for the output zip file (without extension): ")
         output_directory = input("Enter the directory where you want to save the zip file: ")
-        output_path = os.path.join(output_directory, output_name + ".zip")
+        output_path = os.path.join(output_directory, output_name)
 
         if os.path.isdir(PATH):
             # If PATH is a directory, use shutil.make_archive
