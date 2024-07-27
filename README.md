@@ -1,7 +1,7 @@
-# Disk Analyzer Documentation
+# Disk Utility Tool Documentation
 
 ## Overview
-A disk utility tool script designed to traverse a given directory, calculate the size of each file and directory within it, and convert these sizes into a user-specified unit (KB, MB, GB, or TB).
+A disk utility tool script designed to traverse a given directory, calculate the size of each file and directory within it, convert these sizes into a user-specified unit (KB, MB, GB, or TB), and provide functionalities for zipping and unzipping files or directories.
 
 ## Dependencies
 - **Python 3.x**: The core programming language used.
@@ -12,6 +12,8 @@ A disk utility tool script designed to traverse a given directory, calculate the
 - **Directory Traversal**: Efficiently navigates through a specified directory, including all subdirectories, to gather information about file and directory sizes.
 - **Size Calculation**: Accurately calculates the size of files and directories in bytes.
 - **Unit Conversion**: Offers the ability to convert the calculated sizes from bytes to a more readable format specified by the user (KB, MB, GB, or TB).
+- **File Compression**: Allows users to zip files or directories, making it easier to manage large files or groups of files.
+- **File Decompression**: Provides the functionality to unzip files, enabling users to easily access the contents of compressed files.
 
 ## Constants
 - `BYTES_PER_UNIT` (int): A global constant set to 1024, representing the number of bytes in a kilobyte (KB), used as the base for conversion to other units.
